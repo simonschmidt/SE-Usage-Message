@@ -1,7 +1,9 @@
 // ==UserScript==
 // @name          Mathematica Usage tooltip
 // @author        Simon Schmidt
-// @version       1.0
+// @version       1.1
+// @updateURL     http://simonschmidt.github.io/SE-Usage-Message/m_usage.meta.js
+// @downloadURL   http://simonschmidt.github.io/SE-Usage-Message/m_usage.user.js
 // @description	  ::usage tooltip for Mathematica symbols
 // @require       http://mutation-summary.googlecode.com/git/src/mutation-summary.js
 // @include       http://mathematica.stackexchange.com/*
@@ -3622,3 +3624,4 @@ var usage={"AbelianGroup" : "AbelianGroup[{n₁,n₂,…}] represents the direct
 };
 
 begin();
+
