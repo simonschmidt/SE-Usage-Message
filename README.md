@@ -1,5 +1,7 @@
 ### ::usage messages on stackexchange
 
+[Direct link to userscript](http://simonschmidt.github.io/SE-Usage-Message/m_usage.user.js)
+
 Put a tooltip with ::usage on builtin symobls in code blocks.
 
 The ::usage is converted to unicode, where possible sub and supscript symbols are used
