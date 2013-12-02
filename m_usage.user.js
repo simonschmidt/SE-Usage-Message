@@ -14,7 +14,7 @@
 
 // We only want to run the following code on certain pages, so
 // match the current page against this RegEx pattern
-// halirutan: The buttons will now appear when you edit a post in the review-queue
+// (Taken from the editor-button script by halirutan)
 if (location.pathname.match(/^\/(?:questions\/(?:ask|\d+)|review\/(?:close|first-posts|late-answers|low-quality-posts|reopen|suggested-edits)\/\d+|posts\/\d+\/edit|users\/edit|edit-tag-wiki)/) === null)
     return;
 
