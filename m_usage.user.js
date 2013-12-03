@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          Mathematica Usage tooltip
 // @author        Simon Schmidt
-// @version       1.3
+// @version       1.4
 // @updateURL     http://simonschmidt.github.io/SE-Usage-Message/m_usage.meta.js
 // @downloadURL   http://simonschmidt.github.io/SE-Usage-Message/m_usage.user.js
 // @description	  ::usage tooltip for Mathematica symbols
@@ -52,7 +52,7 @@ function begin(){
 // Same symbols as in the lang-mma.js prettify script
 // Usage messages textified and exported from Mathemtica 8.0.4
 
-var usageG={"AbelianGroup" : "AbelianGroup[{n₁,n₂,…}] represents the direct product of the cyclic groups of degrees n₁,n₂,….", 
+var usage={"AbelianGroup" : "AbelianGroup[{n₁,n₂,…}] represents the direct product of the cyclic groups of degrees n₁,n₂,….", 
 "Abort" : "Abort[] generates an interrupt to abort a computation. ", 
 "AbortKernels" : "AbortKernels[] aborts evaluations running in all parallel subkernels.", 
 "AbortProtect" : "AbortProtect[expr] evaluates expr, saving any aborts until the evaluation is complete. ", 
