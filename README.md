@@ -1,4 +1,4 @@
-### ::usage messages on Mathematica symbols
+### ::usage tooltip for Mathematica symbols
 
 [Direct link to userscript](http://simonschmidt.github.io/SE-Usage-Message/m_usage.user.js)
 
@@ -19,7 +19,7 @@ symbols with a special class, making them easy to detect.
   descriptions have the full-form "Subscript" and "Subsuperscript"
   (Same goes for under and overscript that is completely missing)
 
-* Mathematica uses a lot of symbols in the unicode PUA I've mapped
+* Mathematica uses a lot of symbols in the unicode PUA. I've mapped
   the ones I could find similar looking characters for, others are
   left as-is (See Conjugate for instance)
 
