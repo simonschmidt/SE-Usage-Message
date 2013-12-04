@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          Mathematica Usage tooltip
 // @author        Simon Schmidt
-// @version       1.4.1
+// @version       1.5
 // @updateURL     http://simonschmidt.github.io/SE-Usage-Message/m_usage.meta.js
 // @downloadURL   http://simonschmidt.github.io/SE-Usage-Message/m_usage.user.js
 // @description	  ::usage tooltip for Mathematica symbols
@@ -15,23 +15,22 @@
 //  UserScript Source
 //=====================
 
-var onSE = document.domain == 'mathematica.stackexchange.com' || document.domain == 'meta.mathematica.stackexchange.com';
-var onWC = document.domain == 'community.wolfram.com';
+var readyFunction, mmaCodeSelector;
+if (document.domain == 'community.wolfram.com'){
+  readyFunction = $(document).ready;
+  mmaCodeSelector = 'span.M-keyword';
+} else if (document.domain == 'mathematica.stackexchange.com' || document.domain == 'meta.mathematica.stackexchange.com'){
+  readyFunction = StackExchange.ready;
+  mmaCodeSelector = 'code, span.kwd';
 
-var readyFunction;
-if (onWC){ readyFunction = $(document).ready; }
-if (onSE){ readyFunction = StackExchange.ready; }
-
-var selector;
-if (onSE){ selector = 'code, span.kwd'; }
-if (onWC){ selector = 'span.M-keyword'; }
-
-if (onSE){
   // We only want to run the following code on certain pages, so
   // match the current page against this RegEx pattern
   // (Taken from the editor-button script by halirutan)
   if (location.pathname.match(/^\/(?:questions\/(?:ask|\d+)|review\/(?:close|first-posts|late-answers|low-quality-posts|reopen|suggested-edits)\/\d+|posts\/\d+\/edit|users\/edit|edit-tag-wiki)/) === null)
       return;
+} else {
+  console.error('Tried to run on invalid site');
+  return;
 }
 
 function begin(){
@@ -48,7 +47,7 @@ function begin(){
         var observer = new MutationSummary({
             // The prettify highlighter uses kwd class for builtin symbols
             //queries: [{ element: 'code' }, {element: 'span.kwd'}, {element: 'span.M-keyword'}],
-            queries: [{element: selector}],
+            queries: [{element: mmaCodeSelector}],
             callback:
               function (summaries) {
                 summaries[0].added.forEach( TagFunction );
@@ -56,7 +55,7 @@ function begin(){
         });
 
         // Give tooltip to already existing code
-        $(selector).each(function(i, e){TagFunction(e);});
+        $(mmaCodeSelector).each(function(i, e){TagFunction(e);});
     });
 }
 
