@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          Mathematica Usage tooltip
 // @author        Simon Schmidt
-// @version       1.5
+// @version       1.5.1
 // @updateURL     http://simonschmidt.github.io/SE-Usage-Message/m_usage.meta.js
 // @downloadURL   http://simonschmidt.github.io/SE-Usage-Message/m_usage.user.js
 // @description	  ::usage tooltip for Mathematica symbols
@@ -37,7 +37,7 @@ function begin(){
     readyFunction(function() {
 
         function TagFunction(elem){
-            var tooltip = usage[elem.innerHTML];
+            var tooltip = usage[elem.innerHTML.trim()];
             if ( tooltip ){
                 elem.setAttribute('title', tooltip);
             }
