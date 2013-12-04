@@ -8,21 +8,34 @@
 // @require       http://mutation-summary.googlecode.com/git/src/mutation-summary.js
 // @include       http://mathematica.stackexchange.com/*
 // @include       http://meta.mathematica.stackexchange.com/*
+// @include       http://community.wolfram.com/*
 // ==/UserScript==
 
 //=====================
 //  UserScript Source
 //=====================
 
-// We only want to run the following code on certain pages, so
-// match the current page against this RegEx pattern
-// (Taken from the editor-button script by halirutan)
-if (location.pathname.match(/^\/(?:questions\/(?:ask|\d+)|review\/(?:close|first-posts|late-answers|low-quality-posts|reopen|suggested-edits)\/\d+|posts\/\d+\/edit|users\/edit|edit-tag-wiki)/) === null)
-    return;
+var onSE = document.domain == 'mathematica.stackexchange.com' || document.domain == 'meta.mathematica.stackexchange.com';
+var onWC = document.domain == 'community.wolfram.com';
 
+var readyFunction;
+if (onWC){ readyFunction = $(document).ready; }
+if (onSE){ readyFunction = StackExchange.ready; }
+
+var selector;
+if (onSE){ selector = 'code, span.kwd'; }
+if (onWC){ selector = 'span.M-keyword'; }
+
+if (onSE){
+  // We only want to run the following code on certain pages, so
+  // match the current page against this RegEx pattern
+  // (Taken from the editor-button script by halirutan)
+  if (location.pathname.match(/^\/(?:questions\/(?:ask|\d+)|review\/(?:close|first-posts|late-answers|low-quality-posts|reopen|suggested-edits)\/\d+|posts\/\d+\/edit|users\/edit|edit-tag-wiki)/) === null)
+      return;
+}
 
 function begin(){
-    StackExchange.ready(function() {
+    readyFunction(function() {
 
         function TagFunction(elem){
             var tooltip = usage[elem.innerHTML];
@@ -34,17 +47,16 @@ function begin(){
         // Detect new code and add the tooltip
         var observer = new MutationSummary({
             // The prettify highlighter uses kwd class for builtin symbols
-            queries: [{ element: 'code' }, {element: 'span.kwd'}],
+            //queries: [{ element: 'code' }, {element: 'span.kwd'}, {element: 'span.M-keyword'}],
+            queries: [{element: selector}],
             callback:
               function (summaries) {
                 summaries[0].added.forEach( TagFunction );
-                summaries[1].added.forEach( TagFunction );
               }
         });
 
         // Give tooltip to already existing code
-        $('span.kwd').each(function(i, e){TagFunction(e);});
-        $('code').each(function(i, e){TagFunction(e);});
+        $(selector).each(function(i, e){TagFunction(e);});
     });
 }
 
