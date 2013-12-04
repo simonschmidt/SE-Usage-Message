@@ -31,7 +31,7 @@ function begin(){
             }
         }
 
-        // Detect new code and ad the tooltip
+        // Detect new code and add the tooltip
         var observer = new MutationSummary({
             // The prettify highlighter uses kwd class for builtin symbols
             queries: [{ element: 'code' }, {element: 'span.kwd'}],
@@ -42,7 +42,7 @@ function begin(){
               }
         });
 
-        // Give tooltip to already existings code
+        // Give tooltip to already existing code
         $('span.kwd').each(function(i, e){TagFunction(e);});
         $('code').each(function(i, e){TagFunction(e);});
     });
