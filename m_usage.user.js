@@ -1,28 +1,40 @@
 // ==UserScript==
 // @name          Mathematica Usage tooltip
 // @author        Simon Schmidt
-// @version       1.4.1
+// @version       1.5
 // @updateURL     http://simonschmidt.github.io/SE-Usage-Message/m_usage.meta.js
 // @downloadURL   http://simonschmidt.github.io/SE-Usage-Message/m_usage.user.js
 // @description	  ::usage tooltip for Mathematica symbols
 // @require       http://mutation-summary.googlecode.com/git/src/mutation-summary.js
 // @include       http://mathematica.stackexchange.com/*
 // @include       http://meta.mathematica.stackexchange.com/*
+// @include       http://community.wolfram.com/*
 // ==/UserScript==
 
 //=====================
 //  UserScript Source
 //=====================
 
-// We only want to run the following code on certain pages, so
-// match the current page against this RegEx pattern
-// (Taken from the editor-button script by halirutan)
-if (location.pathname.match(/^\/(?:questions\/(?:ask|\d+)|review\/(?:close|first-posts|late-answers|low-quality-posts|reopen|suggested-edits)\/\d+|posts\/\d+\/edit|users\/edit|edit-tag-wiki)/) === null)
-    return;
+var readyFunction, mmaCodeSelector;
+if (document.domain == 'community.wolfram.com'){
+  readyFunction = $(document).ready;
+  mmaCodeSelector = 'span.M-keyword';
+} else if (document.domain == 'mathematica.stackexchange.com' || document.domain == 'meta.mathematica.stackexchange.com'){
+  readyFunction = StackExchange.ready;
+  mmaCodeSelector = 'code, span.kwd';
 
+  // We only want to run the following code on certain pages, so
+  // match the current page against this RegEx pattern
+  // (Taken from the editor-button script by halirutan)
+  if (location.pathname.match(/^\/(?:questions\/(?:ask|\d+)|review\/(?:close|first-posts|late-answers|low-quality-posts|reopen|suggested-edits)\/\d+|posts\/\d+\/edit|users\/edit|edit-tag-wiki)/) === null)
+      return;
+} else {
+  console.error('Tried to run on invalid site');
+  return;
+}
 
 function begin(){
-    StackExchange.ready(function() {
+    readyFunction(function() {
 
         function TagFunction(elem){
             var tooltip = usage[elem.innerHTML];
@@ -31,20 +43,19 @@ function begin(){
             }
         }
 
-        // Detect new code and ad the tooltip
+        // Detect new code and add the tooltip
         var observer = new MutationSummary({
             // The prettify highlighter uses kwd class for builtin symbols
-            queries: [{ element: 'code' }, {element: 'span.kwd'}],
+            //queries: [{ element: 'code' }, {element: 'span.kwd'}, {element: 'span.M-keyword'}],
+            queries: [{element: mmaCodeSelector}],
             callback:
               function (summaries) {
                 summaries[0].added.forEach( TagFunction );
-                summaries[1].added.forEach( TagFunction );
               }
         });
 
-        // Give tooltip to already existings code
-        $('span.kwd').each(function(i, e){TagFunction(e);});
-        $('code').each(function(i, e){TagFunction(e);});
+        // Give tooltip to already existing code
+        $(mmaCodeSelector).each(function(i, e){TagFunction(e);});
     });
 }
 
